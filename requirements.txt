@@ -9,6 +9,10 @@ absl-py==2.0.0
     #   chex
     #   optax
     #   orbax-checkpoint
+aiohttp==3.9.3
+    # via fsspec
+aiosignal==1.3.1
+    # via aiohttp
 altair==5.2.0
     # via streamlit
 anyio==4.0.0
@@ -23,8 +27,11 @@ asttokens==2.4.0
     # via stack-data
 async-lru==2.0.4
     # via jupyterlab
+async-timeout==4.0.3
+    # via aiohttp
 attrs==23.1.0
     # via
+    #   aiohttp
     #   jsonschema
     #   referencing
 babel==2.13.0
@@ -89,9 +96,14 @@ fonttools==4.43.1
     # via matplotlib
 fqdn==1.5.1
     # via jsonschema
-fsspec==2023.9.2
+frozenlist==1.4.1
+    # via
+    #   aiohttp
+    #   aiosignal
+fsspec[http]==2023.9.2
     # via
     #   etils
+    #   pytorch-lightning
     #   torch
 gitdb==4.0.11
     # via gitpython
@@ -102,6 +114,7 @@ idna==3.4
     #   anyio
     #   jsonschema
     #   requests
+    #   yarl
 importlib-metadata==7.0.1
     # via streamlit
 importlib-resources==6.1.0
@@ -217,6 +230,10 @@ jupyterlab-widgets==3.0.9
     # via ipywidgets
 kiwisolver==1.4.5
     # via matplotlib
+lightning-utilities==0.10.1
+    # via
+    #   pytorch-lightning
+    #   torchmetrics
 markdown-it-py==3.0.0
     # via rich
 markupsafe==2.1.3
@@ -245,6 +262,10 @@ msgpack==1.0.7
     # via
     #   flax
     #   orbax-checkpoint
+multidict==6.0.4
+    # via
+    #   aiohttp
+    #   yarl
 multipledispatch==1.0.0
     # via numpyro
 nbclient==0.8.0
@@ -288,11 +309,13 @@ numpy==1.25.2
     #   pandas
     #   pyarrow
     #   pydeck
+    #   pytorch-lightning
     #   scikit-learn
     #   scipy
     #   seaborn
     #   streamlit
     #   tensorstore
+    #   torchmetrics
 numpyro==0.13.0
     # via -r requirements.in
 nvidia-cublas-cu12==12.1.3.1
@@ -343,11 +366,14 @@ packaging==23.2
     #   jupyter-server
     #   jupyterlab
     #   jupyterlab-server
+    #   lightning-utilities
     #   matplotlib
     #   nbconvert
+    #   pytorch-lightning
     #   qtconsole
     #   qtpy
     #   streamlit
+    #   torchmetrics
 pandas==2.1.1
     # via
     #   -r requirements.in
@@ -410,6 +436,8 @@ python-dateutil==2.8.2
     #   streamlit
 python-json-logger==2.0.7
     # via jupyter-events
+pytorch-lightning==2.1.3
+    # via -r requirements.in
 pytz==2023.3.post1
     # via pandas
 pyyaml==6.0.1
@@ -417,6 +445,7 @@ pyyaml==6.0.1
     #   flax
     #   jupyter-events
     #   orbax-checkpoint
+    #   pytorch-lightning
 pyzmq==25.1.1
     # via
     #   ipykernel
@@ -435,6 +464,7 @@ referencing==0.30.2
     #   jupyter-events
 requests==2.31.0
     # via
+    #   fsspec
     #   jupyterlab-server
     #   streamlit
 rfc3339-validator==0.1.4
@@ -506,7 +536,12 @@ toolz==0.12.0
     #   altair
     #   chex
 torch==2.2.0
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   pytorch-lightning
+    #   torchmetrics
+torchmetrics==1.3.0.post0
+    # via pytorch-lightning
 tornado==6.3.3
     # via
     #   ipykernel
@@ -517,7 +552,9 @@ tornado==6.3.3
     #   streamlit
     #   terminado
 tqdm==4.66.1
-    # via numpyro
+    # via
+    #   numpyro
+    #   pytorch-lightning
 traitlets==5.11.2
     # via
     #   comm
@@ -549,7 +586,9 @@ typing-extensions==4.8.0
     #   chex
     #   etils
     #   flax
+    #   lightning-utilities
     #   orbax-checkpoint
+    #   pytorch-lightning
     #   streamlit
     #   torch
     #   typer
@@ -577,7 +616,12 @@ websocket-client==1.6.4
     # via jupyter-server
 widgetsnbextension==4.0.9
     # via ipywidgets
+yarl==1.9.4
+    # via aiohttp
 zipp==3.17.0
     # via
     #   etils
     #   importlib-metadata
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
