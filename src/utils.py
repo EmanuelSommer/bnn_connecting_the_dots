@@ -88,8 +88,8 @@ def rank_normalization(samples: jnp.array) -> jnp.array:
     """
     n_samples = math.prod(samples.shape)
     # get the overall ranks
-    ranks = jnp.argsort(samples, axis=None).reshape(samples.shape)
-    tmp = (ranks + 1 - 0.375) / (n_samples + 0.25)
+    ranks = jax.scipy.stats.rankdata(samples, axis=None).reshape(samples.shape)
+    tmp = (ranks - 0.375) / (n_samples + 0.25)
     # transform the ranks by the cdf of the standard normal distribution
     return jax.scipy.stats.norm.ppf(tmp)
 
