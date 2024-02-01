@@ -1,0 +1,26 @@
+
+data:
+  # - "airfoil.data"
+  # - "bikesharing.data"
+  # # - "concrete.data"
+  # - "diabetes.data" # basically linear
+  # - "energy.data"
+  # - "forest_fire.data" # basically linear
+  # - "yacht.data"
+  - "protein.data" # caution huge in comparison
+activation:
+  # - "relu"
+  - "tanh"
+  # - "silu"
+hidden_structure:
+  # - "2"
+  # - "8"
+  # - "50"
+  # - "64"
+  - "16-16"
+  # - "8-8-8-8-8-8"
+  # - "32-32-32"
+replications:
+  - 1
+  # - 2
+  # - 3

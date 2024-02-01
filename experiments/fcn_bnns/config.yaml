@@ -1,0 +1,75 @@
+
+data:
+  - "airfoil.data"
+  # - "bikesharing.data"
+  # - "concrete.data"
+  # - "diabetes.data" # basically linear
+  # - "energy.data"
+  # - "forest_fire.data" # basically linear
+  # - "yacht.data"
+  # - "protein.data" # caution huge in comparison
+activation:
+  - "relu"
+  # - "tanh"
+  # - "silu"
+hidden_structure:
+  # - "2"
+  # - "8"
+  # - "50"
+  # - "64"
+  - "16-16"
+  # - "8-8-8-8-8-8"
+  # - "32-32-32"
+n_chains: 6
+n_samples: 800
+keep_warmup: false
+sampler:
+  NUTS_small:
+    n_warmup: 1000
+    step_size: 1
+    adapt_step_size: true
+  # NUTS_large:
+  #   n_warmup: 10000
+  #   step_size: 1
+  #   adapt_step_size: true
+  # NUTS_huge:
+  #   n_warmup: 100000
+  #   step_size: 1
+  #   adapt_step_size: true
+  # HMC_small:
+  #   n_warmup: 100
+  #   step_size: 0.00001 # default 1 (adapted DA), Izm: 0.00001 (fixed)
+  #   adapt_step_size: false
+  #   adapt_mass_matrix: false
+  #   trajectory_length: 0.157 # approx pi/2*priorstd, default 2*pi
+  # HMC:
+  #   n_warmup: 100
+  #   step_size: 0.00001 # default 1 (adapted DA), Izm: 0.00001 (fixed)
+  #   adapt_step_size: false
+  #   adapt_mass_matrix: false
+  #   trajectory_length: 1.57079 # approx pi/2*priorstd, default 2*pi
+  # HMC_largetraj:
+  #   n_warmup: 100
+  #   step_size: 0.0001 # default 1 (adapted DA), Izm: 0.00001 (fixed)
+  #   adapt_step_size: false
+  #   adapt_mass_matrix: false
+  #   trajectory_length: 6.28 # approx pi/2*priorstd, default 2*pi
+  # Metropolis:
+  #   n_warmup: 10000
+  #   step_size: 0.1
+replications:
+  - 1
+  # - 2
+  # - 3
+prior_sd:
+  - 1
+  # - 0.1
+  # - 0.1
+  # - 0.01
+  # - 0.001
+  # - 100
+  # - 1000
+prior_dist:
+  - "Normal"
+  # - "Laplace"
+warmstart: "single" # "none" or "multi"
