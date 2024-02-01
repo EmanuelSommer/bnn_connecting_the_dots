@@ -16,8 +16,11 @@ Run `pip install -r requirements.txt` from the root of the folder. We use python
 |   ├── fcn_bnns
 |   └── fcn_ensembles
 ├── notebooks
-├── probabilisticml
-└── src
+├── probabilisticml # toolbox for probabilistic ML
+├── results
+|   ├── de
+|   └── fcn_bnns
+└── src 
 ```
 
 ## Usage
