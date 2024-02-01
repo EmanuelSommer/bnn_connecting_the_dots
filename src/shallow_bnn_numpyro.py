@@ -12,7 +12,6 @@ import probabilisticml as pml
 from jax import vmap
 from numpy.typing import ArrayLike
 from numpyro.distributions import (
-    BernoulliProbs,
     Distribution,
     HalfNormal,
     Laplace,
@@ -68,6 +67,14 @@ class GaussianMLP:
             self._activation = jnp.tanh
         elif activation == 'relu':
             self._activation = lambda x: x * (x > 0)
+        elif activation == 'silu':
+            self._activation = jax.nn.silu
+        elif activation == 'leaky_relu':
+            self._activation = jax.nn.leaky_relu
+        elif activation == 'sigmoid':
+            self._activation = jax.nn.sigmoid
+        elif activation == 'trunc_relu':
+            self._activation = lambda x: jnp.clip(x, a_min=0, a_max=1)
         else:
             self._activation = lambda x: x
 
