@@ -36,7 +36,7 @@ BATCH_SIZE: Final = [32, 64]
 VAL_SIZE: Final = [0.1]  # [0., 0.1]
 
 
-# TODO outsource to utils
+
 def load_config(config_path: str) -> tuple[dict, list]:
     """Load the configuration file."""
     with open(config_path, 'r') as file:
@@ -50,7 +50,7 @@ def save_config(config, path):
         yaml.dump(config, file)
 
 
-# TODO outsource to utils
+
 def load_data(dataset: str, seed: int, val_size: float) -> tuple:
     """
     Load the training data.
@@ -76,7 +76,7 @@ def load_data(dataset: str, seed: int, val_size: float) -> tuple:
     return X_train, Y_train, X_val, Y_val
 
 
-# TODO outsource to utils
+
 def exp_tuple_to_dict(exp: tuple) -> dict:
     """Convert an experiment tuple to a dictionary."""
     return {
@@ -87,7 +87,7 @@ def exp_tuple_to_dict(exp: tuple) -> dict:
     }
 
 
-# TODO outsource to utils
+
 def experiment_generator(config: dict) -> dict:
     """Generate the experiments (Cartesian Product)."""
     exp_dimensions = []
