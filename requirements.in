@@ -1,0 +1,13 @@
+jax
+blackjax
+numpyro
+flax
+matplotlib
+jupyter
+pandas
+typer
+seaborn
+scikit-learn
+joblib
+streamlit
+torch

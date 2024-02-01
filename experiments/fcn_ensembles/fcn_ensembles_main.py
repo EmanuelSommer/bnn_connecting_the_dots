@@ -13,7 +13,7 @@ from typing import (
 )
 
 import numpy as np
-import probabilisticml as pml
+
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
@@ -27,7 +27,7 @@ from torch.utils.data import DataLoader, TensorDataset
 # import wandb
 
 sys.path.append('../..')
-
+import probabilisticml as pml
 
 ENSEMBLE_SIZE: Final = 12
 MAX_EPOCHS: Final = 5000

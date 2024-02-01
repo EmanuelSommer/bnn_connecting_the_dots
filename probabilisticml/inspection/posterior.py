@@ -1,0 +1,1 @@
+"""Inspection of posterior distribution."""

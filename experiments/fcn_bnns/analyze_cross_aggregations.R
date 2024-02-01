@@ -1,6 +1,9 @@
+# Some handy visualizations of the aggregated experiment results.
+
 library(tidyverse)
 # load the data +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-aggregated_data <- read_csv("")
+file <- "Dummy.csv"
+aggregated_data <- read_csv(file)
 
 main_hyperparams <- c(
   "data",
@@ -182,7 +185,7 @@ aggregated_data |>
   ) +
   theme_bw()
 
-  # now the scatter plots
+# now the scatter plots
 aggregated_data |>
   mutate(across(all_of(main_hyperparams), as.character)) |>
   pivot_longer(

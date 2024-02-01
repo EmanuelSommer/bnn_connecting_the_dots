@@ -9,6 +9,8 @@ absl-py==2.0.0
     #   chex
     #   optax
     #   orbax-checkpoint
+altair==5.2.0
+    # via streamlit
 anyio==4.0.0
     # via jupyter-server
 argon2-cffi==23.1.0
@@ -17,8 +19,6 @@ argon2-cffi-bindings==21.2.0
     # via argon2-cffi
 arrow==1.3.0
     # via isoduration
-arviz==0.16.1
-    # via -r requirements.in
 asttokens==2.4.0
     # via stack-data
 async-lru==2.0.4
@@ -33,23 +33,25 @@ backcall==0.2.0
     # via ipython
 beautifulsoup4==4.12.2
     # via nbconvert
+blackjax==1.1.0
+    # via -r requirements.in
 bleach==6.1.0
     # via nbconvert
-build==1.0.3
-    # via pip-tools
+blinker==1.7.0
+    # via streamlit
+cachetools==5.3.2
+    # via streamlit
 certifi==2023.7.22
     # via requests
 cffi==1.16.0
     # via argon2-cffi-bindings
-cfgv==3.4.0
-    # via pre-commit
 charset-normalizer==3.3.0
     # via requests
 chex==0.1.82
     # via optax
 click==8.1.7
     # via
-    #   pip-tools
+    #   streamlit
     #   typer
 comm==0.1.4
     # via
@@ -59,16 +61,12 @@ contourpy==1.1.1
     # via matplotlib
 cycler==0.12.1
     # via matplotlib
-dataclasses==0.6
-    # via probabilisticml
 debugpy==1.8.0
     # via ipykernel
 decorator==5.1.1
     # via ipython
 defusedxml==0.7.1
     # via nbconvert
-distlib==0.3.7
-    # via virtualenv
 etils[epath,epy]==1.5.1
     # via orbax-checkpoint
 exceptiongroup==1.1.3
@@ -79,8 +77,12 @@ executing==2.0.0
     # via stack-data
 fastjsonschema==2.18.1
     # via nbformat
+fastprogress==1.0.3
+    # via blackjax
 filelock==3.12.4
-    # via virtualenv
+    # via
+    #   torch
+    #   triton
 flax==0.7.4
     # via -r requirements.in
 fonttools==4.43.1
@@ -88,18 +90,20 @@ fonttools==4.43.1
 fqdn==1.5.1
     # via jsonschema
 fsspec==2023.9.2
-    # via etils
-h5netcdf==1.2.0
-    # via arviz
-h5py==3.10.0
-    # via h5netcdf
-identify==2.5.30
-    # via pre-commit
+    # via
+    #   etils
+    #   torch
+gitdb==4.0.11
+    # via gitpython
+gitpython==3.1.41
+    # via streamlit
 idna==3.4
     # via
     #   anyio
     #   jsonschema
     #   requests
+importlib-metadata==7.0.1
+    # via streamlit
 importlib-resources==6.1.0
     # via etils
 ipykernel==6.25.2
@@ -122,43 +126,52 @@ isoduration==20.11.0
 jax==0.4.18
     # via
     #   -r requirements.in
+    #   blackjax
     #   chex
     #   flax
+    #   jaxopt
     #   numpyro
     #   optax
     #   orbax-checkpoint
-    #   probabilisticml
 jaxlib==0.4.18
     # via
+    #   blackjax
     #   chex
+    #   jaxopt
     #   numpyro
     #   optax
     #   orbax-checkpoint
+jaxopt==0.8.3
+    # via blackjax
 jedi==0.19.1
     # via ipython
 jinja2==3.1.2
     # via
+    #   altair
     #   jupyter-server
     #   jupyterlab
     #   jupyterlab-server
     #   nbconvert
+    #   pydeck
+    #   torch
 joblib==1.3.2
-    # via scikit-learn
+    # via
+    #   -r requirements.in
+    #   scikit-learn
 json5==0.9.14
     # via jupyterlab-server
 jsonpointer==2.4
+    # via jsonschema
+jsonschema[format-nongpl]==4.19.1
     # via
+    #   altair
     #   jupyter-events
     #   jupyterlab-server
     #   nbformat
 jsonschema-specifications==2023.7.1
     # via jsonschema
-jsonschema[format-nongpl]==4.19.1
-    # via jsonschema
 jupyter==1.0.0
-    # via
-    #   -r requirements.in
-    #   probabilisticml
+    # via -r requirements.in
 jupyter-client==8.4.0
     # via
     #   ipykernel
@@ -213,7 +226,6 @@ markupsafe==2.1.3
 matplotlib==3.8.0
     # via
     #   -r requirements.in
-    #   arviz
     #   seaborn
 matplotlib-inline==0.1.6
     # via
@@ -227,6 +239,8 @@ ml-dtypes==0.3.1
     # via
     #   jax
     #   jaxlib
+mpmath==1.3.0
+    # via sympy
 msgpack==1.0.7
     # via
     #   flax
@@ -248,8 +262,8 @@ nest-asyncio==1.5.8
     # via
     #   ipykernel
     #   orbax-checkpoint
-nodeenv==1.8.0
-    # via pre-commit
+networkx==3.2.1
+    # via torch
 notebook==7.0.5
     # via jupyter
 notebook-shim==0.2.3
@@ -258,13 +272,13 @@ notebook-shim==0.2.3
     #   notebook
 numpy==1.25.2
     # via
-    #   arviz
+    #   altair
     #   chex
     #   contourpy
     #   flax
-    #   h5py
     #   jax
     #   jaxlib
+    #   jaxopt
     #   matplotlib
     #   ml-dtypes
     #   numpyro
@@ -272,30 +286,59 @@ numpy==1.25.2
     #   optax
     #   orbax-checkpoint
     #   pandas
-    #   probabilisticml
+    #   pyarrow
+    #   pydeck
     #   scikit-learn
     #   scipy
     #   seaborn
+    #   streamlit
     #   tensorstore
-    #   xarray
-    #   xarray-einstats
 numpyro==0.13.0
+    # via -r requirements.in
+nvidia-cublas-cu12==12.1.3.1
     # via
-    #   -r requirements.in
-    #   probabilisticml
+    #   nvidia-cudnn-cu12
+    #   nvidia-cusolver-cu12
+    #   torch
+nvidia-cuda-cupti-cu12==12.1.105
+    # via torch
+nvidia-cuda-nvrtc-cu12==12.1.105
+    # via torch
+nvidia-cuda-runtime-cu12==12.1.105
+    # via torch
+nvidia-cudnn-cu12==8.9.2.26
+    # via torch
+nvidia-cufft-cu12==11.0.2.54
+    # via torch
+nvidia-curand-cu12==10.3.2.106
+    # via torch
+nvidia-cusolver-cu12==11.4.5.107
+    # via torch
+nvidia-cusparse-cu12==12.1.0.106
+    # via
+    #   nvidia-cusolver-cu12
+    #   torch
+nvidia-nccl-cu12==2.19.3
+    # via torch
+nvidia-nvjitlink-cu12==12.3.101
+    # via
+    #   nvidia-cusolver-cu12
+    #   nvidia-cusparse-cu12
+nvidia-nvtx-cu12==12.1.105
+    # via torch
 opt-einsum==3.3.0
     # via jax
 optax==0.1.7
-    # via flax
+    # via
+    #   blackjax
+    #   flax
 orbax-checkpoint==0.4.1
     # via flax
 overrides==7.4.0
     # via jupyter-server
 packaging==23.2
     # via
-    #   arviz
-    #   build
-    #   h5netcdf
+    #   altair
     #   ipykernel
     #   jupyter-server
     #   jupyterlab
@@ -304,13 +347,13 @@ packaging==23.2
     #   nbconvert
     #   qtconsole
     #   qtpy
-    #   xarray
+    #   streamlit
 pandas==2.1.1
     # via
     #   -r requirements.in
-    #   arviz
+    #   altair
     #   seaborn
-    #   xarray
+    #   streamlit
 pandocfilters==1.5.0
     # via nbconvert
 parso==0.8.3
@@ -320,19 +363,11 @@ pexpect==4.8.0
 pickleshare==0.7.5
     # via ipython
 pillow==10.1.0
-    # via matplotlib
-pip-tools==7.3.0
-    # via -r requirements.in
+    # via
+    #   matplotlib
+    #   streamlit
 platformdirs==3.11.0
-    # via
-    #   jupyter-core
-    #   virtualenv
-pre-commit==3.5.0
-    # via
-    #   -r requirements.in
-    #   probabilisticml
-probabilisticml @ git+https://github.com/lisa-wm/probabilisticml@main
-    # via -r requirements.in
+    # via jupyter-core
 prometheus-client==0.17.1
     # via jupyter-server
 prompt-toolkit==3.0.39
@@ -340,7 +375,9 @@ prompt-toolkit==3.0.39
     #   ipython
     #   jupyter-console
 protobuf==4.24.4
-    # via orbax-checkpoint
+    # via
+    #   orbax-checkpoint
+    #   streamlit
 psutil==5.9.6
     # via ipykernel
 ptyprocess==0.7.0
@@ -349,8 +386,12 @@ ptyprocess==0.7.0
     #   terminado
 pure-eval==0.2.2
     # via stack-data
+pyarrow==15.0.0
+    # via streamlit
 pycparser==2.21
     # via cffi
+pydeck==0.8.1b0
+    # via streamlit
 pygments==2.16.1
     # via
     #   ipython
@@ -360,14 +401,13 @@ pygments==2.16.1
     #   rich
 pyparsing==3.1.1
     # via matplotlib
-pyproject-hooks==1.0.0
-    # via build
 python-dateutil==2.8.2
     # via
     #   arrow
     #   jupyter-client
     #   matplotlib
     #   pandas
+    #   streamlit
 python-json-logger==2.0.7
     # via jupyter-events
 pytz==2023.3.post1
@@ -377,7 +417,6 @@ pyyaml==6.0.1
     #   flax
     #   jupyter-events
     #   orbax-checkpoint
-    #   pre-commit
 pyzmq==25.1.1
     # via
     #   ipykernel
@@ -395,7 +434,9 @@ referencing==0.30.2
     #   jsonschema-specifications
     #   jupyter-events
 requests==2.31.0
-    # via jupyterlab-server
+    # via
+    #   jupyterlab-server
+    #   streamlit
 rfc3339-validator==0.1.4
     # via
     #   jsonschema
@@ -405,7 +446,9 @@ rfc3986-validator==0.1.1
     #   jsonschema
     #   jupyter-events
 rich==13.6.0
-    # via flax
+    # via
+    #   flax
+    #   streamlit
 rpds-py==0.10.6
     # via
     #   jsonschema
@@ -414,11 +457,10 @@ scikit-learn==1.3.2
     # via -r requirements.in
 scipy==1.11.3
     # via
-    #   arviz
     #   jax
     #   jaxlib
+    #   jaxopt
     #   scikit-learn
-    #   xarray-einstats
 seaborn==0.13.0
     # via -r requirements.in
 send2trash==1.8.2
@@ -429,12 +471,20 @@ six==1.16.0
     #   bleach
     #   python-dateutil
     #   rfc3339-validator
+smmap==5.0.1
+    # via gitdb
 sniffio==1.3.0
     # via anyio
 soupsieve==2.5
     # via beautifulsoup4
 stack-data==0.6.3
     # via ipython
+streamlit==1.30.0
+    # via -r requirements.in
+sympy==1.12
+    # via torch
+tenacity==8.2.3
+    # via streamlit
 tensorstore==0.1.45
     # via
     #   flax
@@ -447,14 +497,16 @@ threadpoolctl==3.2.0
     # via scikit-learn
 tinycss2==1.2.1
     # via nbconvert
+toml==0.10.2
+    # via streamlit
 tomli==2.0.1
-    # via
-    #   build
-    #   jupyterlab
-    #   pip-tools
-    #   pyproject-hooks
+    # via jupyterlab
 toolz==0.12.0
-    # via chex
+    # via
+    #   altair
+    #   chex
+torch==2.2.0
+    # via -r requirements.in
 tornado==6.3.3
     # via
     #   ipykernel
@@ -462,6 +514,7 @@ tornado==6.3.3
     #   jupyter-server
     #   jupyterlab
     #   notebook
+    #   streamlit
     #   terminado
 tqdm==4.66.1
     # via numpyro
@@ -482,27 +535,36 @@ traitlets==5.11.2
     #   nbconvert
     #   nbformat
     #   qtconsole
+triton==2.2.0
+    # via torch
 typer==0.9.0
     # via -r requirements.in
 types-python-dateutil==2.8.19.14
     # via arrow
 typing-extensions==4.8.0
     # via
-    #   arviz
+    #   altair
     #   async-lru
+    #   blackjax
     #   chex
     #   etils
     #   flax
     #   orbax-checkpoint
+    #   streamlit
+    #   torch
     #   typer
 tzdata==2023.3
     # via pandas
+tzlocal==5.2
+    # via streamlit
 uri-template==1.3.0
     # via jsonschema
 urllib3==2.0.6
     # via requests
-virtualenv==20.24.5
-    # via pre-commit
+validators==0.22.0
+    # via streamlit
+watchdog==3.0.0
+    # via streamlit
 wcwidth==0.2.8
     # via prompt-toolkit
 webcolors==1.13
@@ -513,19 +575,9 @@ webencodings==0.5.1
     #   tinycss2
 websocket-client==1.6.4
     # via jupyter-server
-wheel==0.41.2
-    # via pip-tools
 widgetsnbextension==4.0.9
     # via ipywidgets
-xarray==2023.9.0
-    # via
-    #   arviz
-    #   xarray-einstats
-xarray-einstats==0.6.0
-    # via arviz
 zipp==3.17.0
-    # via etils
-
-# The following packages are considered to be unsafe in a requirements file:
-# pip
-# setuptools
+    # via
+    #   etils
+    #   importlib-metadata

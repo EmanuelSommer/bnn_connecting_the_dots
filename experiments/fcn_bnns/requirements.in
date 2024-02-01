@@ -1,6 +1,6 @@
-probabilisticml @ git+https://github.com/lisa-wm/probabilisticml.git
 jax
 blackjax
 numpyro
 flax
 joblib
+torch

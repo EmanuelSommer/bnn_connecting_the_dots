@@ -1,4 +1,4 @@
-"""Main script for running the experiments with fully connected Gaussian BNNs."""
+"""Main script for running the experiments with fully connected BNNs."""
 import copy
 import itertools
 import json
@@ -6,16 +6,11 @@ import os
 import pickle
 import sys
 import time
-from collections import namedtuple
 from datetime import datetime
 
 import jax
-import numpyro
-import numpyro.distributions as dist
-import probabilisticml as pml
 import yaml
 from jax import numpy as jnp
-from jax import random
 from joblib import (
     Parallel,
     delayed,
@@ -24,38 +19,9 @@ from joblib import (
 from numpyro.infer import HMC, NUTS
 
 sys.path.append('../..')
-from module_sandbox.shallow_bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
-from module_sandbox.utils import add_chain_dimension  # noqa: E402
-
-MHState = namedtuple('MHState', ['u', 'rng_key'])
-
-
-class MetropolisHastings(numpyro.infer.mcmc.MCMCKernel):
-    """Metropolis-Hastings transition kernel."""
-
-    sample_field = 'u'
-
-    def __init__(self, potential_fn, step_size=0.1):
-        """Initialize the Metropolis-Hastings transition kernel."""
-        self.potential_fn = potential_fn
-        self.step_size = step_size
-
-    def init(self, rng_key, num_warmup, init_params, model_args, model_kwargs):
-        """Return an initial state for the MH transition kernel."""
-        return MHState(init_params, rng_key)
-
-    def sample(self, state, model_args, model_kwargs):
-        """Return a new state using the MH transition kernel."""
-        u, rng_key = state
-        rng_key, key_proposal, key_accept = random.split(rng_key, 3)
-        u_proposal = dist.Normal(loc=u, scale=self.step_size).sample(
-            key_proposal,
-        )
-        accept_prob = jnp.exp(self.potential_fn(u) - self.potential_fn(u_proposal))
-        u_new = jnp.where(
-            dist.Uniform().sample(key_accept) < accept_prob, u_proposal, u
-        )
-        return MHState(u_new, rng_key)
+import probabilisticml as pml
+from src.shallow_bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
+from src.utils import add_chain_dimension  # noqa: E402
 
 
 def load_config():
@@ -195,11 +161,6 @@ def run_experiment(config: dict, exp_name: str, exp: tuple, date: str) -> None:
                 'adapt_mass_matrix'
             ],
         )
-    elif exp_dict['sampler'] == 'Metropolis':
-        sampler = MetropolisHastings(
-            model,
-            step_size=config['sampler'][exp_dict['sampler']]['step_size'],
-        )
     else:
         raise ValueError('Sampling Kernel not implemented')
 
@@ -216,17 +177,28 @@ def run_experiment(config: dict, exp_name: str, exp: tuple, date: str) -> None:
     hidden_struct_str = '-'.join([str(d) for d in exp_dict['hidden_structure']])
     warmstart_id = (
         f'{exp_dict["data"]}|{hidden_struct_str}|'
-        + f'{exp_dict["activation"]}|{exp_dict["replications"]}'
+        + f'{exp_dict["activation"]}|{exp_dict["replications"]}|'
     )
 
     if exp_dict['warmstart'] == 'single':
         init_params = [
-            dict(jnp.load(f'results/de/{warmstart_id}/{warmstart_id}|0.npz'))
+            {
+                key: value.T if key.startswith('W') else value
+                for key, value in dict(
+                    jnp.load(f'results/de/{warmstart_id}/0.npz')
+                ).items()
+            }
             for _ in range(num_parallel_chains)
         ]
     elif exp_dict['warmstart'] == 'multi':
         init_params = [
-            dict(jnp.load(f)) for f in os.listdir(f'results/de/{warmstart_id}')
+            {
+                key: value.T if key.startswith('W') else value
+                for key, value in dict(
+                    jnp.load(f'results/de/{warmstart_id}/{f}')
+                ).items()
+            }
+            for f in os.listdir(f'results/de/{warmstart_id}')
         ]
     elif exp_dict['warmstart'] == 'none':
         init_params = [None for _ in range(num_parallel_chains)]
@@ -265,10 +237,6 @@ def run_experiment(config: dict, exp_name: str, exp: tuple, date: str) -> None:
     posterior_samples = add_chain_dimension(
         posterior_samples, n_chains=num_parallel_chains
     )
-    # print(
-    #     f'The shape of the posterior samples is: '
-    #     f'{posterior_samples[list(posterior_samples.keys())[0]].shape}'
-    # )
 
     # save the posterior samples
     with open(f'results/fcn_bnns/{date}/{exp_name}.pkl', 'wb') as fpkl:

@@ -1,4 +1,8 @@
-"""Interactive UI for exploring the results of the experiments."""
+"""
+Interactive UI for exploring the results of the experiments.
+
+Run with `streamlit run 1_experiment_ui.py` from the experiments/fcn_bnns folder.
+"""
 
 import copy
 import json
@@ -11,16 +15,18 @@ import jax.numpy as jnp
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import probabilisticml as pml
+
 import seaborn as sns
 import streamlit as st
 import yaml
 from numpyro.diagnostics import hpdi
-from probabilisticml.inspection.prediction import MCMCPredictor
+
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 
 sys.path.append('../..')
+import probabilisticml as pml
+from probabilisticml.inspection.prediction import MCMCPredictor
 from experiments.fcn_bnns.utils.ui_utils import (  # noqa: E402
     calculate_diagnostics,
     plot_sample_paths,
@@ -29,15 +35,15 @@ from experiments.fcn_bnns.utils.ui_utils import (  # noqa: E402
     visualize_rhat,
 )
 
-# from module_sandbox.diagnostics.ess import effective_sample_size  # noqa: E402
-from module_sandbox.diagnostics.gelman import split_chain_r_hat  # noqa: E402
-from module_sandbox.shallow_bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
-from module_sandbox.utils import (  # noqa: E402
+# from src.diagnostics.ess import effective_sample_size  # noqa: E402
+from src.diagnostics.gelman import split_chain_r_hat  # noqa: E402
+from src.shallow_bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
+from src.utils import (  # noqa: E402
     add_chain_dimension,
     flatten_chain_dimension,
     mse,
 )
-from module_sandbox.visualization.posterior_predictive import (  # noqa: E402
+from src.visualization.posterior_predictive import (  # noqa: E402
     pp_interchain_means,
     visualize_pp_chain_means,
 )
@@ -162,7 +168,6 @@ if start:
     stats_cols = st.columns(2)
     with stats_cols[0]:
         st.subheader('Baseline Performance (RMSE)')
-    # Also fit with a linear model using sklearn for reference
     reg_shallow = LinearRegression().fit(X_SNN_train, Y_SNN_train)
     mse_linear_model = np.mean(
         (reg_shallow.predict(X_SNN_val).ravel() - Y_SNN_val.ravel()) ** 2
@@ -413,6 +418,25 @@ if visualize_parameter_traces & start:
         )
 
     samples = copy.deepcopy(posterior_samples[param][:, :truncate_samples, ...])
+    # display a button to download the samples as a csv
+    df_save = (
+        pd.DataFrame(samples[:, :, dim1, dim2])
+        if len(samples.shape) == 4
+        else pd.DataFrame(samples[:, :, dim1])
+    )
+    # transpose
+    df_save = df_save.T
+
+    def convert_df(df):
+        """Convert a dataframe to csv."""
+        return df.to_csv(index=False).encode('utf-8')
+
+    csv = convert_df(df_save)
+
+    st.download_button(
+        'Press to Download', csv, 'file.csv', 'text/csv', key='download-csv'
+    )
+
     sample_dict = {'model': samples.reshape(-1, *samples.shape[2:])}
     n_chains = posterior_samples[param].shape[0]
     n_samples = posterior_samples[param].shape[1]
@@ -497,12 +521,6 @@ if visualize_a_prediction and posterior_predictive and start:
             alpha=0.8,
             label=f'Chain {chain_index}',
         )
-    # plt.plot(
-    #     preds_chain_dim[:, :truncate_samples, pred_obs].mean(axis=0),
-    #     color='red',
-    #     label='Mean',
-    #     alpha=0.5,
-    # )
     plt.axhline(
         Y_SNN_val[pred_obs],
         color='black',
@@ -510,7 +528,6 @@ if visualize_a_prediction and posterior_predictive and start:
         alpha=0.8,
         linestyle='--',
     )
-    # restrict to -1 and 1
     plt.ylim([-2, 2])
     plt.title('Prediction')
     plt.legend()

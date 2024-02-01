@@ -6,6 +6,8 @@ from typing import Optional, Union
 import jax
 import jax.numpy as jnp
 import numpyro
+import sys
+sys.path.append('..')
 import probabilisticml as pml
 from jax import vmap
 from numpy.typing import ArrayLike

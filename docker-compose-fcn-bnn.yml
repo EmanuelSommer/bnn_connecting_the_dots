@@ -5,10 +5,6 @@ services:
     build:
       context: .
       dockerfile: ./experiments/fcn_bnns/Dockerfile
-      args:
-        GITHUB_TOKEN: ${GITHUB_TOKEN}
     image: exp-fcn-bnns
     volumes:
       - ./results:/results
-    env_file:
-      - .env

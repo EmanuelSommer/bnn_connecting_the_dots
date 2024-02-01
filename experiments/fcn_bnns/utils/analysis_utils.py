@@ -16,8 +16,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 
 sys.path.append('../../..')
-from module_sandbox.shallow_bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
-from module_sandbox.utils import (  # noqa: E402
+from src.shallow_bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
+from src.utils import (  # noqa: E402
     add_chain_dimension,
     flatten_chain_dimension,
 )
@@ -69,12 +69,16 @@ def extract_exp_info(exp_name: str) -> dict:
     return exp_info
 
 
-def load_samples(exp_name: str, path: str = '') -> dict:
+def load_samples(exp_name: str, path: str = '', discard_warmup: int = 0) -> dict:
     """Load the posterior samples."""
     path = f'{path}/' if path else path
     sample_path = f'{path}{exp_name}.pkl'
     with open(sample_path, 'rb') as f:
         posterior_samples = pickle.load(f)
+        if discard_warmup > 0:
+            posterior_samples = {
+                k: v[:, discard_warmup:, ...] for k, v in posterior_samples.items()
+            }
         posterior_samples_raw = copy.deepcopy(posterior_samples)
         posterior_samples_raw = flatten_chain_dimension(posterior_samples_raw)
     return posterior_samples, posterior_samples_raw

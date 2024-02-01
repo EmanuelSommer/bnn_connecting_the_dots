@@ -1,11 +1,13 @@
 """
-Main script for running the experiments with fully connected Gaussian BNNs.
+Main script for running the experiments with fully connected BNNs.
+
+The focus is to investigate how the sampler behaves within the warmup phase.
+Therefore do not forget to add the logging of relevant metrics in the numpyro
+code like the step size, acceptance prob etc. The file of interest is utils.py in the
+ numpyro library (line 371) as of version 0.13.0.
 
 Run not from root directory but from experiments/fcn_bnns/:
 python fcn_bnn_sampling_insights.py
-
-Also do not forget to uncomment/ add the print or save statements in the numpyro code.
-The file of interest is utils.py in the numpyro library (line 371).
 """
 import copy
 import itertools
@@ -14,16 +16,11 @@ import os
 import pickle
 import sys
 import time
-from collections import namedtuple
 from datetime import datetime
 
 import jax
-import numpyro
-import numpyro.distributions as dist
-import probabilisticml as pml
 import yaml
 from jax import numpy as jnp
-from jax import random
 from joblib import (
     Parallel,
     delayed,
@@ -32,38 +29,9 @@ from joblib import (
 from numpyro.infer import HMC, NUTS
 
 sys.path.append('../..')
-from module_sandbox.shallow_bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
-from module_sandbox.utils import add_chain_dimension  # noqa: E402
-
-MHState = namedtuple('MHState', ['u', 'rng_key'])
-
-
-class MetropolisHastings(numpyro.infer.mcmc.MCMCKernel):
-    """Metropolis-Hastings transition kernel."""
-
-    sample_field = 'u'
-
-    def __init__(self, potential_fn, step_size=0.1):
-        """Initialize the Metropolis-Hastings transition kernel."""
-        self.potential_fn = potential_fn
-        self.step_size = step_size
-
-    def init(self, rng_key, num_warmup, init_params, model_args, model_kwargs):
-        """Return an initial state for the MH transition kernel."""
-        return MHState(init_params, rng_key)
-
-    def sample(self, state, model_args, model_kwargs):
-        """Return a new state using the MH transition kernel."""
-        u, rng_key = state
-        rng_key, key_proposal, key_accept = random.split(rng_key, 3)
-        u_proposal = dist.Normal(loc=u, scale=self.step_size).sample(
-            key_proposal,
-        )
-        accept_prob = jnp.exp(self.potential_fn(u) - self.potential_fn(u_proposal))
-        u_new = jnp.where(
-            dist.Uniform().sample(key_accept) < accept_prob, u_proposal, u
-        )
-        return MHState(u_new, rng_key)
+import probabilisticml as pml
+from src.shallow_bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
+from src.utils import add_chain_dimension  # noqa: E402
 
 
 def load_config():
@@ -202,11 +170,6 @@ def run_experiment(config: dict, exp_name: str, exp: tuple, date: str) -> None:
                 'adapt_mass_matrix'
             ],
         )
-    elif exp_dict['sampler'] == 'Metropolis':
-        sampler = MetropolisHastings(
-            model,
-            step_size=config['sampler'][exp_dict['sampler']]['step_size'],
-        )
     else:
         raise ValueError('Sampling Kernel not implemented')
 
@@ -232,17 +195,7 @@ def run_experiment(config: dict, exp_name: str, exp: tuple, date: str) -> None:
         # print(m.mcmc._states)
         return m.get_samples(with_warmup=exp_dict['keep_warmup'])
 
-    # # perform inference in parallel
-    # with parallel_config(backend='loky', inner_max_num_threads=1):
-    #     samples = Parallel(n_jobs=num_parallel_chains)(
-    #         delayed(get_mcmc_samples)(
-    #             mcmc_learner=mcmc_learner,
-    #             rng_key=rng_key_m[j],
-    #         )
-    #         for j in range(num_parallel_chains)
-    #     )
-
-    # non parallel version
+    # sequential execution
     samples = []
     for j in range(num_parallel_chains):
         samples.append(
@@ -261,10 +214,6 @@ def run_experiment(config: dict, exp_name: str, exp: tuple, date: str) -> None:
     posterior_samples = add_chain_dimension(
         posterior_samples, n_chains=num_parallel_chains
     )
-    # print(
-    #     f'The shape of the posterior samples is: '
-    #     f'{posterior_samples[list(posterior_samples.keys())[0]].shape}'
-    # )
 
     # save the posterior samples
     with open(f'results/fcn_bnns/{date}/{exp_name}.pkl', 'wb') as fpkl:

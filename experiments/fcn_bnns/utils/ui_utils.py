@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 sys.path.append('../..')
-from module_sandbox.diagnostics.ess import effective_sample_size  # noqa: E402
-from module_sandbox.diagnostics.gelman import split_chain_r_hat  # noqa: E402
+from src.diagnostics.ess import effective_sample_size  # noqa: E402
+from src.diagnostics.gelman import split_chain_r_hat  # noqa: E402
 
 
 def plot_sample_paths(
