@@ -2,12 +2,10 @@
 data:
   # - "airfoil.data"
   # - "bikesharing.data"
-  # # - "concrete.data"
-  # - "diabetes.data" # basically linear
+  # - "concrete.data"
   # - "energy.data"
-  # - "forest_fire.data" # basically linear
   # - "yacht.data"
-  - "protein.data" # caution huge in comparison
+  - "protein.data"
 activation:
   # - "relu"
   - "tanh"
