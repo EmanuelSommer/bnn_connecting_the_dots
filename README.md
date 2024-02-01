@@ -13,7 +13,19 @@ Run `pip install -r requirements.txt`.
 ```
 ├── data
 ├── experiments
+|   ├── fcn_bnns
+|   └── fcn_ensembles
 ├── notebooks
 ├── paper
 └── src
 ```
+
+## Experiments
+
+- explain how to run exps
+
+`docker compose XYZ`
+
+## Analysis of Results
+
+- explain notebooks
