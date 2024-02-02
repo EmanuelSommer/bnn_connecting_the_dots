@@ -16,7 +16,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 
 sys.path.append('../../..')
-from src.shallow_bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
+from src.bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
 from src.utils import (  # noqa: E402
     add_chain_dimension,
     flatten_chain_dimension,

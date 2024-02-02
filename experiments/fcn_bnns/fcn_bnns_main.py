@@ -20,7 +20,7 @@ from numpyro.infer import HMC, NUTS
 
 sys.path.append('../..')
 import probabilisticml as pml
-from src.shallow_bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
+from src.bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
 from src.utils import add_chain_dimension  # noqa: E402
 
 

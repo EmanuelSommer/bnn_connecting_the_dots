@@ -37,7 +37,7 @@ from experiments.fcn_bnns.utils.ui_utils import (  # noqa: E402
 
 # from src.diagnostics.ess import effective_sample_size  # noqa: E402
 from src.diagnostics.gelman import split_chain_r_hat  # noqa: E402
-from src.shallow_bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
+from src.bnn_numpyro import gaussian_mlp_from_config  # noqa: E402
 from src.utils import (  # noqa: E402
     add_chain_dimension,
     flatten_chain_dimension,
