@@ -34,6 +34,7 @@ Fit a fully connected Bayesian neural network to a dataset in `data/` with the f
 5. Aggregate various statistics from the results by running `python ../../../experiments/fcn_bnns/aggregate_cross_exp.py` from the experiments folder. This will create a `.csv` file with the aggregated statistics in the the same folder. Examples for the reported stats are hold out RMSE, LPPD, the configurations of the experiments, and the runtime of the individual experiments.
 6. Use `experiments/fcn_ensembles/fcn_main.ipynb` to compute the deep-ensemble baseline. The corresponding hyperparameter search is conducted in `experiments/fcn_ensembles/fcn_hpo.ipynb`
 7. Use `experiments/rf_tuning.py` to tune the hyperparameters of the random forest baseline.
+8. Use `experiments/samp_path_exp` to run and visualize the decomposition of the sampling path.
 
 ## Analysis of Results
 
