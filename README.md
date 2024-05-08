@@ -63,7 +63,6 @@ If you use this code in your research, please cite the following paper:
   title={Connecting the Dots: Is Mode-Connectedness the Key to Feasible Sample-Based Inference in Bayesian Neural Networks?},
   author={Sommer, Emanuel and Wimmer, Lisa and Papamarkou, Theodore and Bothmann, Ludwig and Bischl, Bernd and R{\"u}gamer, David},
   booktitle={Proceedings of the 41st International Conference on Machine Learning},
-  volume={235},
   year={2024},
   publisher={PMLR},
 }
