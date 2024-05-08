@@ -2,7 +2,7 @@
 
 ![](fig.png)
 
-This repository contains code for creating the results for the ICML 2024 submission *"Connecting the Dots: Is Mode-Connectedness the Key to Feasible Sample-Based Inference in Bayesian Neural Networks?"*.
+This repository contains code for creating the results for the ICML 2024 paper *"Connecting the Dots: Is Mode-Connectedness the Key to Feasible Sample-Based Inference in Bayesian Neural Networks?"*.
 
 ## Getting Started
 
@@ -48,3 +48,18 @@ Notebooks for the specific analyses of the results are in the `notebooks/` folde
 - `FCNBNNSlopes.ipynb` contains code for the analysis of the slopes of the posterior samples' traces.
 - `FCNBNNWarmstart.ipynb` trains an equivalent DNN to warmstart a BNN i.e. train a BDE.
 - `FCNBNNEnsemblePerformance.ipynb` evaluates the DE baseline.
+
+## Citation
+
+If you use this code in your research, please cite the following paper:
+
+```
+@inproceedings{sommer2024connecting,
+  title={Connecting the Dots: Is Mode-Connectedness the Key to Feasible Sample-Based Inference in Bayesian Neural Networks?},
+  author={Sommer, Emanuel and Wimmer, Lisa and Papamarkou, Theodore and Bothmann, Ludwig and Bischl, Bernd and R{\"u}gamer, David},
+  booktitle={Proceedings of the 41st International Conference on Machine Learning},
+  volume={235},
+  year={2024},
+  publisher={PMLR},
+}
+```
