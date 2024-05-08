@@ -51,7 +51,7 @@ Notebooks for the specific analyses of the results are in the `notebooks/` folde
     - Evaluation of both parameter space and function space diagnostics
 - `FCNBNNLastLayerSymmetries.ipynb` covers bivariate visualizations of the posterior samples for various layers.
 - `FCNBNNSlopes.ipynb` contains code for the analysis of the slopes of the posterior samples' traces.
-- `FCNBNNWarmstart.ipynb` trains an equivalent DNN to warmstart a BNN i.e. train a BDE.
+- `FCNBNNWarmstart.ipynb` trains an equivalent DNN to warmstart a BNN i.e. train DEI-MCMC.
 - `FCNBNNEnsemblePerformance.ipynb` evaluates the DE baseline.
 
 ## Citation
